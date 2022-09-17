@@ -49,6 +49,8 @@ public class TargetSpawner : MonoBehaviour
     private Anchor _arLeftTrack;
     private Anchor _arRightTrack;
 
+    private List<Anchor> _additionalAnchors;
+
     private bool _foundHit = false;
 
     private void Start()
@@ -56,6 +58,7 @@ public class TargetSpawner : MonoBehaviour
         _anchorIndicators = new List<GameObject>();
         _clearanceIndicators = new List<ClearanceSettings>();
         Radius1mIndicator.SetActive(false);
+        _additionalAnchors = new List<Anchor>();
     }
 
     void OnEnable()
@@ -111,6 +114,12 @@ public class TargetSpawner : MonoBehaviour
         MainUIController.Instance._resetButton.SetActive(false);
         MainUIController.Instance.ActivateUserButtons(false);
         MainUIController.Instance._snackbarPanel.SetActive(true);
+
+        foreach(var a in _additionalAnchors)
+        {
+            Destroy(a.gameObject);
+        }
+        _additionalAnchors.Clear();
 
         foreach (var indicator in _clearanceIndicators)
         {
@@ -250,7 +259,6 @@ public class TargetSpawner : MonoBehaviour
             }
             else
             {
-
                 DetectedPlane detectedPlane = hit.Trackable as DetectedPlane;
                 if (detectedPlane.PlaneType != DetectedPlaneType.Vertical)  //only horizontal surfaces
                 {
@@ -271,6 +279,47 @@ public class TargetSpawner : MonoBehaviour
         Vibration.Vibrate(300, 80, false);
         _planeGen._anchorSet = true;
 
+    }
+
+    public Transform CreateTrackAnchorRaycast(Ray ray)
+    {
+        TrackableHit hit;
+        Anchor newAnchor = null;
+
+        TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon |
+        TrackableHitFlags.FeaturePointWithSurfaceNormal;
+
+        _foundHit = Frame.Raycast(ray.origin, ray.direction, out hit, float.MaxValue, raycastFilter);
+
+        if (_foundHit && hit.Trackable is DetectedPlane)
+        {
+            // Use hit pose and camera pose to check if hit-test is from the
+            // back of the plane, if it is, no need to create the anchor.
+            if ((hit.Trackable is DetectedPlane) &&
+                Vector3.Dot(_firstPersonCam.transform.position - hit.Pose.position,
+                    hit.Pose.rotation * Vector3.up) < 0)
+            {
+                Debug.Log("Hit at back of the current DetectedPlane");
+            }
+            else
+            {
+                DetectedPlane detectedPlane = hit.Trackable as DetectedPlane;
+                if (detectedPlane.PlaneType != DetectedPlaneType.Vertical)  //only horizontal surfaces
+                {
+                    newAnchor = hit.Trackable.CreateAnchor(hit.Pose);
+                }
+
+            }
+        }
+
+        if (newAnchor == null)
+            return null;
+
+        var indicator = Instantiate(_debugAnchor, hit.Pose.position, hit.Pose.rotation);
+        indicator.transform.parent = newAnchor.transform;
+        _anchorIndicators.Add(indicator.gameObject);
+        _planeGen._anchorSet = true;
+        return indicator;
     }
 
     public void SetVisibleMeshes(bool visible)

@@ -3,23 +3,11 @@
     "m_SelectedPackage": {
         "deviceId": "269d41d8160d7ece",
         "name": "com.hackathon.trackclearance",
-        "processId": 29767,
+        "processId": 21948,
         "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
-        {
-            "deviceId": "269d41d8160d7ece",
-            "name": "com.hackathon.trackclearance",
-            "processId": 16390,
-            "exited": true
-        },
-        {
-            "deviceId": "269d41d8160d7ece",
-            "name": "com.hackathon.trackclearance",
-            "processId": 8372,
-            "exited": true
-        },
         {
             "deviceId": "269d41d8160d7ece",
             "name": "com.hackathon.trackclearance",
@@ -42,6 +30,24 @@
             "deviceId": "269d41d8160d7ece",
             "name": "com.hackathon.trackclearance",
             "processId": 29767,
+            "exited": true
+        },
+        {
+            "deviceId": "269d41d8160d7ece",
+            "name": "com.hackathon.trackclearance",
+            "processId": 29902,
+            "exited": true
+        },
+        {
+            "deviceId": "269d41d8160d7ece",
+            "name": "com.hackathon.trackclearance",
+            "processId": 12553,
+            "exited": true
+        },
+        {
+            "deviceId": "269d41d8160d7ece",
+            "name": "com.hackathon.trackclearance",
+            "processId": 21948,
             "exited": false
         },
         {

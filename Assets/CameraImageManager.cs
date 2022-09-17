@@ -20,6 +20,8 @@ public class CameraImageManager : MonoBehaviour
     public TargetSpawner targetSpawner;
     public GameObject PointCloud;
 
+    private DetectionFacts detectionFacts;
+
 
     Vector3 lastPosition;
 
@@ -67,6 +69,12 @@ public class CameraImageManager : MonoBehaviour
         PointCloud.SetActive(false);
 
         yield return null;
+
+        detectionFacts = new DetectionFacts();
+        detectionFacts.pixelWidth = Camera.main.pixelWidth;
+        detectionFacts.pixelHeight = Camera.main.pixelHeight;
+        detectionFacts.nearClipPlane = Camera.main.nearClipPlane;
+        detectionFacts.worldToScreen = Camera.main.projectionMatrix * Camera.main.worldToCameraMatrix;
 
         lastPosition = Camera.main.transform.position;
         var tex = ScreenCapture.CaptureScreenshotAsTexture();
@@ -123,7 +131,53 @@ public class CameraImageManager : MonoBehaviour
         else
         {
             text.text = "Tracks found!";
+
+            var Left1 = new Vector3(json.points.left[0][0] * 4, detectionFacts.pixelHeight - json.points.left[0][1] * 4, 0);
+            var Left2 = new Vector3(json.points.left[1][0] * 4, detectionFacts.pixelHeight - json.points.left[1][1] * 4, 0);
+            var Right1 = new Vector3(json.points.right[0][0] * 4, detectionFacts.pixelHeight - json.points.right[0][1] * 4, 0);
+            var Right2 = new Vector3(json.points.right[1][0] * 4, detectionFacts.pixelHeight - json.points.right[1][1] * 4, 0);
+
+            var l1 = targetSpawner.CreateTrackAnchorRaycast(ScreenPointToRay(Left1));
+            var l2 = targetSpawner.CreateTrackAnchorRaycast(ScreenPointToRay(Left2));
+            Debug.DrawLine(l1.position, l2.position, Color.green, 20f);
+
+            var r1 = targetSpawner.CreateTrackAnchorRaycast(ScreenPointToRay(Right1));
+            var r2 = targetSpawner.CreateTrackAnchorRaycast(ScreenPointToRay(Right2));
+            Debug.DrawLine(r1.position, r2.position, Color.red, 20f);
         }
+    }
+
+    public Ray ScreenPointToRay(Vector3 sp)
+    {
+        var v0 = manualScreenPointToWorld(detectionFacts.worldToScreen, detectionFacts.pixelWidth,
+                detectionFacts.pixelHeight, 0, sp);
+        var v1 = manualScreenPointToWorld(detectionFacts.worldToScreen, detectionFacts.pixelWidth,
+                detectionFacts.pixelHeight, 1, sp);
+
+        var ray = new Ray(v0, (v1-v0).normalized);
+        return ray;
+    }
+
+    Vector3 manualScreenPointToWorld(Matrix4x4 world2Screen, int pixelWidth, int pixelHeight, float nearClipPlane, Vector3 sp)
+    {
+        Matrix4x4 screen2World = world2Screen.inverse;
+
+        float[] inn = new float[4];
+
+        inn[0] = 2.0f * (sp.x / pixelWidth) - 1.0f;
+        inn[1] = 2.0f * (sp.y / pixelHeight) - 1.0f;
+        inn[2] = nearClipPlane;
+        inn[3] = 1.0f;
+
+        Vector4 pos = screen2World * new Vector4(inn[0], inn[1], inn[2], inn[3]);
+
+        pos.w = 1.0f / pos.w;
+
+        pos.x *= pos.w;
+        pos.y *= pos.w;
+        pos.z *= pos.w;
+
+        return new Vector3(pos.x, pos.y, pos.z);
     }
 
     Texture2D Resize(Texture2D texture2D, int targetX, int targetY)
@@ -186,6 +240,12 @@ public class CameraImageManager : MonoBehaviour
     {
         public int imgWidth;
         public int imgHeight;
+
+        public int pixelWidth;
+        public int pixelHeight;
+        public float nearClipPlane;
+
+        public Matrix4x4 worldToScreen;
 
         public Vector3 cameraPosition;
         public Quaternion cameraRotation;

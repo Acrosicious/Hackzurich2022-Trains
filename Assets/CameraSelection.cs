@@ -28,20 +28,20 @@ public class CameraSelection : MonoBehaviour
 
     private void OnGUI()
     {
-        if(configs != null)
-        {
-            GUI.skin.label.fontSize = 50;
-            int y = 50;
-            int i = 0;
-            foreach(var c in configs)
-            {
-                GUI.Label(new Rect(10, y, 500, 1000), $"Kamera {i}:{c.ImageSize.x}, {c.ImageSize.y}");
-                y += 40;
-                i++;
-            }
+        //if(configs != null)
+        //{
+        //    GUI.skin.label.fontSize = 50;
+        //    int y = 50;
+        //    int i = 0;
+        //    foreach(var c in configs)
+        //    {
+        //        GUI.Label(new Rect(10, y, 500, 1000), $"Kamera {i}:{c.ImageSize.x}, {c.ImageSize.y}");
+        //        y += 40;
+        //        i++;
+        //    }
     
             
-        }
+        //}
         
     }
 

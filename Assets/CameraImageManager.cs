@@ -103,7 +103,17 @@ public class CameraImageManager : MonoBehaviour
         lastMessageReceived = www.downloadHandler.text;
         text.text = "Received: " + lastMessageReceived;
 
+        var json = Newtonsoft.Json.JsonConvert.DeserializeObject<DetectionResponse>(lastMessageReceived);
+        if (!json.points.tracks)
+        {
+            text.text = "No tracks found";
+        }
+        else
+        {
+            text.text = "Tracks found!";
+        }
     }
+
 
     public IEnumerator SendPostRequest(string img64)
     {
@@ -137,9 +147,26 @@ public class CameraImageManager : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
+    public class DetectionResponse
     {
-        
+        public Points points;
+    }
+
+    public class Points
+    {
+        public bool tracks;
+
+        public int[][] left;
+        public int[][] right;
+    }
+
+    public class DetectionFacts
+    {
+        public int imgWidth;
+        public int imgHeight;
+
+        public Vector3 cameraPosition;
+        public Quaternion cameraRotation;
+
     }
 }

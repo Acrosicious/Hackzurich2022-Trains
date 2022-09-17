@@ -142,21 +142,19 @@ public class TargetSpawner : MonoBehaviour
 
         _clearanceIndicators.Add(ClearanceIndicator.GetComponent<ClearanceSettings>());
 
-        // Add Transparency between Indicators
-
-        for(int i = 1; i < 4; i++)
-        {
-            var ind1 = Instantiate(ClearanceObj, 
-                ClearanceIndicator.transform.position + ClearanceIndicator.transform.right * i * 2,
-                ClearanceIndicator.transform.rotation);
+        //for(int i = 1; i < 4; i++)
+        //{
+        //    var ind1 = Instantiate(ClearanceObj, 
+        //        ClearanceIndicator.transform.position + ClearanceIndicator.transform.right * i * 2,
+        //        ClearanceIndicator.transform.rotation);
             
-            var ind2 = Instantiate(ClearanceObj, 
-                ClearanceIndicator.transform.position + ClearanceIndicator.transform.right * i * -2,
-                ClearanceIndicator.transform.rotation);
+        //    var ind2 = Instantiate(ClearanceObj, 
+        //        ClearanceIndicator.transform.position + ClearanceIndicator.transform.right * i * -2,
+        //        ClearanceIndicator.transform.rotation);
 
-            _clearanceIndicators.Add(ind1.GetComponent<ClearanceSettings>());
-            _clearanceIndicators.Add(ind2.GetComponent<ClearanceSettings>());
-        }
+        //    _clearanceIndicators.Add(ind1.GetComponent<ClearanceSettings>());
+        //    _clearanceIndicators.Add(ind2.GetComponent<ClearanceSettings>());
+        //}
 
         MainUIController.Instance._resetButton.SetActive(true);
         MainUIController.Instance.ActivateUserButtons(true);
@@ -209,11 +207,11 @@ public class TargetSpawner : MonoBehaviour
 
     private void OnGUI()
     {
-        if (_arLeftTrack == null)
-        {
-            GUI.skin.label.fontSize = 50;
-            GUI.Label(new Rect(10, 30, 500, 1000), "LEFT NULL");
-        }
+        //if (_arLeftTrack == null)
+        //{
+        //    GUI.skin.label.fontSize = 50;
+        //    GUI.Label(new Rect(10, 30, 500, 1000), "LEFT NULL");
+        //}
         if (_arLeftTrack && _arRightTrack)
         {
             GUI.skin.label.fontSize = 50;
@@ -233,7 +231,6 @@ public class TargetSpawner : MonoBehaviour
         {
             return;
         }
-
 
         TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon |
         TrackableHitFlags.FeaturePointWithSurfaceNormal;

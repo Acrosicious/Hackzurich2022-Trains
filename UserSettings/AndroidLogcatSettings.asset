@@ -1,9 +1,9 @@
 {
-    "m_SelectedDeviceId": "269d41d8160d7ece",
+    "m_SelectedDeviceId": "R52NA09HAQL",
     "m_SelectedPackage": {
-        "deviceId": "269d41d8160d7ece",
-        "name": "com.hackathon.trackclearance",
-        "processId": 8372,
+        "deviceId": "",
+        "name": "",
+        "processId": 0,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -42,6 +42,18 @@
             "deviceId": "269d41d8160d7ece",
             "name": "com.hackathon.trackclearance",
             "processId": 8372,
+            "exited": false
+        },
+        {
+            "deviceId": "269d41d8160d7ece",
+            "name": "com.hackathon.trackclearance",
+            "processId": 26504,
+            "exited": false
+        },
+        {
+            "deviceId": "R52NA09HAQL",
+            "name": "com.android.settings",
+            "processId": 5462,
             "exited": false
         }
     ],

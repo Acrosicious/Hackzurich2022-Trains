@@ -33,6 +33,8 @@ public class TargetSpawner : MonoBehaviour
     public GameObject ClearanceObj;
     public GameObject Radius1mIndicator;
 
+    public CameraImageManager cameraImageManager;
+
 
     [Header("Plane Visuals")]
     public DetectedPlaneGenerator _planeGen;
@@ -108,6 +110,7 @@ public class TargetSpawner : MonoBehaviour
     {
         MainUIController.Instance._resetButton.SetActive(false);
         MainUIController.Instance.ActivateUserButtons(false);
+        MainUIController.Instance._snackbarPanel.SetActive(true);
 
         foreach (var indicator in _clearanceIndicators)
         {
@@ -157,10 +160,17 @@ public class TargetSpawner : MonoBehaviour
 
         MainUIController.Instance._resetButton.SetActive(true);
         MainUIController.Instance.ActivateUserButtons(true);
+        MainUIController.Instance._snackbarPanel.SetActive(false);
 
+        SendImageToServer();
 
         //ClearanceRight = Instantiate(ClearanceObj, Center, ClearanceLeft.transform.rotation * Quaternion.Euler(0, 180, 0));
 
+    }
+
+    private void SendImageToServer()
+    {
+        cameraImageManager.createScreenshot();
     }
 
     private void test()

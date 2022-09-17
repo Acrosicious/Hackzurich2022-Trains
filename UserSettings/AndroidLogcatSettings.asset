@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "269d41d8160d7ece",
         "name": "com.hackathon.trackclearance",
-        "processId": 5331,
+        "processId": 8372,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -30,6 +30,18 @@
             "deviceId": "269d41d8160d7ece",
             "name": "com.hackathon.trackclearance",
             "processId": 5331,
+            "exited": false
+        },
+        {
+            "deviceId": "269d41d8160d7ece",
+            "name": "com.hackathon.trackclearance",
+            "processId": 16390,
+            "exited": false
+        },
+        {
+            "deviceId": "269d41d8160d7ece",
+            "name": "com.hackathon.trackclearance",
+            "processId": 8372,
             "exited": false
         }
     ],

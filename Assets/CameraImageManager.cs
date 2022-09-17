@@ -79,7 +79,7 @@ public class CameraImageManager : MonoBehaviour
         List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
         //formData.Add(new MultipartFormDataSection("image64=" + img64));
         //formData.Add(new MultipartFormDataSection("test=" + "test123"));
-        formData.Add(new MultipartFormFileSection("image", imgBytes));
+        formData.Add(new MultipartFormFileSection("image", imgBytes, "image.png", "image/png"));
 
         UnityWebRequest www = UnityWebRequest.Post(url, formData);
         yield return www.SendWebRequest();

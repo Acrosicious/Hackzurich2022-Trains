@@ -42,7 +42,7 @@ public class TargetSpawner : MonoBehaviour
    
     private Anchor _arAnchor;
     private List<GameObject> _anchorIndicators;
-    private List<GameObject> _clearanceIndicators;
+    private List<ClearanceSettings> _clearanceIndicators;
 
     private Anchor _arLeftTrack;
     private Anchor _arRightTrack;
@@ -52,7 +52,7 @@ public class TargetSpawner : MonoBehaviour
     private void Start()
     {
         _anchorIndicators = new List<GameObject>();
-        _clearanceIndicators = new List<GameObject>();
+        _clearanceIndicators = new List<ClearanceSettings>();
         Radius1mIndicator.SetActive(false);
     }
 
@@ -106,9 +106,12 @@ public class TargetSpawner : MonoBehaviour
 
     public void ResetAnchorAndClearance()
     {
-        foreach(var indicator in _clearanceIndicators)
+        MainUIController.Instance._resetButton.SetActive(false);
+        MainUIController.Instance.ActivateUserButtons(false);
+
+        foreach (var indicator in _clearanceIndicators)
         {
-            Destroy(indicator);
+            Destroy(indicator.gameObject);
         }
 
         _clearanceIndicators.Clear();
@@ -134,7 +137,7 @@ public class TargetSpawner : MonoBehaviour
         var ClearanceIndicator = Instantiate(ClearanceObj, Center, Quaternion.identity);
         ClearanceIndicator.transform.LookAt(_arLeftTrack.transform.position);
 
-        _clearanceIndicators.Add(ClearanceIndicator);
+        _clearanceIndicators.Add(ClearanceIndicator.GetComponent<ClearanceSettings>());
 
         // Add Transparency between Indicators
 
@@ -148,11 +151,13 @@ public class TargetSpawner : MonoBehaviour
                 ClearanceIndicator.transform.position + ClearanceIndicator.transform.right * i * -2,
                 ClearanceIndicator.transform.rotation);
 
-            _clearanceIndicators.Add(ind1);
-            _clearanceIndicators.Add(ind2);
+            _clearanceIndicators.Add(ind1.GetComponent<ClearanceSettings>());
+            _clearanceIndicators.Add(ind2.GetComponent<ClearanceSettings>());
         }
 
         MainUIController.Instance._resetButton.SetActive(true);
+        MainUIController.Instance.ActivateUserButtons(true);
+
 
         //ClearanceRight = Instantiate(ClearanceObj, Center, ClearanceLeft.transform.rotation * Quaternion.Euler(0, 180, 0));
 
@@ -166,6 +171,30 @@ public class TargetSpawner : MonoBehaviour
     public void UserInputConfirm()
     {
 
+    }
+
+    public void ToggleMaterial()
+    {
+        foreach(var c in _clearanceIndicators)
+        {
+            c.ToggleMaterial();
+        }
+    }
+
+    public void ToggleTunnel()
+    {
+        foreach (var c in _clearanceIndicators)
+        {
+            c.ToggleTunnel();
+        }
+    }
+
+    public void ToggleModel()
+    {
+        foreach (var c in _clearanceIndicators)
+        {
+            c.ToggleRailroad();
+        }
     }
 
     private void OnGUI()

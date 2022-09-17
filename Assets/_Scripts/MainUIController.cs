@@ -25,7 +25,9 @@ public class MainUIController : MonoBehaviour
     [Header("User Buttons")]
     public GameObject _userButtons;
     public GameObject _resetButton;
-    public GameObject _confirmButton;
+    public GameObject _transpButton;
+    public GameObject _tunnelButton;
+    public GameObject _modelButton;
 
     [Header("Retice")]
     public GameObject _reticleObject;
@@ -87,8 +89,16 @@ public class MainUIController : MonoBehaviour
         _snackbarText.text = _panelAnchorText;
 
         _userButtons.SetActive(true);
-        _confirmButton.SetActive(false);
+        ActivateUserButtons(false);
+        
         _resetButton.SetActive(false);
+    }
+
+    public void ActivateUserButtons(bool active)
+    {
+        _transpButton.SetActive(active);
+        _tunnelButton.SetActive(active);
+        _modelButton.SetActive(active);
     }
 
 }

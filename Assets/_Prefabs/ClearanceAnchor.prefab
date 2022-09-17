@@ -71,6 +71,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4726664999132470644}
+  - component: {fileID: 3443691687634578262}
   m_Layer: 0
   m_Name: ClearanceAnchor
   m_TagString: Untagged
@@ -97,6 +98,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!114 &3443691687634578262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2416792987369975136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5134e90ee5a4f594b8655eaaf3bccea5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Tunnel: {fileID: 6227443760965259341}
+  Area: {fileID: 6176556134468601344}
+  Border: {fileID: 3486274004178606352}
+  Railroad: {fileID: 300216677505329825}
+  TransparentLight: {fileID: 2100000, guid: b67e66bdb4a7678498b0a35c921a5a81, type: 2}
+  TransparentDark: {fileID: 2100000, guid: 214214babb6303e429b345d3648275e4, type: 2}
+  OpaqueMat: {fileID: 2100000, guid: 0f4fb8fd0c1d2734f8aca0cad92b61cf, type: 2}
 --- !u!1 &3486274004178606352
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,7 +196,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8775436680338178728
 Transform:
   m_ObjectHideFlags: 0

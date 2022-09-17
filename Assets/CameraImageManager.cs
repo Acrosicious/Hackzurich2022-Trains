@@ -16,6 +16,10 @@ public class CameraImageManager : MonoBehaviour
     public TMP_Text text;
 
     public GameObject UI;
+    public GameObject Planes;
+    public TargetSpawner targetSpawner;
+    public GameObject PointCloud;
+
 
     Vector3 lastPosition;
 
@@ -58,19 +62,27 @@ public class CameraImageManager : MonoBehaviour
     public IEnumerator CreateScrenshotWithoutUI()
     {
         UI.SetActive(false);
+        Planes.SetActive(false);
+        targetSpawner.SetVisibleMeshes(false);
+        PointCloud.SetActive(false);
+
         yield return null;
 
         lastPosition = Camera.main.transform.position;
         var tex = ScreenCapture.CaptureScreenshotAsTexture();
-        tex.Resize(tex.width / 4, tex.height / 4);
-        tex.Apply();
+        var resized = Resize(tex, tex.width / 4, tex.height / 4);
+        //tex.Resize(tex.width / 4, tex.height / 4);
+        //tex.Apply();
 
-        var bytes = tex.EncodeToPNG();
+        var bytes = resized.EncodeToPNG();
         //var base64 = Convert.ToBase64String(bytes);
         StartCoroutine(SendPostRequestBytes(bytes));
 
         yield return null;
         UI.SetActive(true);
+        Planes.SetActive(true);
+        targetSpawner.SetVisibleMeshes(true);
+        PointCloud.SetActive(true);
     }
 
     public IEnumerator SendPostRequestBytes(byte[] imgBytes)
@@ -114,6 +126,16 @@ public class CameraImageManager : MonoBehaviour
         }
     }
 
+    Texture2D Resize(Texture2D texture2D, int targetX, int targetY)
+    {
+        RenderTexture rt = new RenderTexture(targetX, targetY, 24);
+        RenderTexture.active = rt;
+        Graphics.Blit(texture2D, rt);
+        Texture2D result = new Texture2D(targetX, targetY);
+        result.ReadPixels(new Rect(0, 0, targetX, targetY), 0, 0);
+        result.Apply();
+        return result;
+    }
 
     public IEnumerator SendPostRequest(string img64)
     {

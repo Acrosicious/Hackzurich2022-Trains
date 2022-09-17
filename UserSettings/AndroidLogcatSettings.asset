@@ -1,9 +1,9 @@
 {
-    "m_SelectedDeviceId": "R52NA09HAQL",
+    "m_SelectedDeviceId": "269d41d8160d7ece",
     "m_SelectedPackage": {
-        "deviceId": "",
-        "name": "",
-        "processId": 0,
+        "deviceId": "269d41d8160d7ece",
+        "name": "com.hackathon.trackclearance",
+        "processId": 29767,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -11,43 +11,37 @@
         {
             "deviceId": "269d41d8160d7ece",
             "name": "com.hackathon.trackclearance",
-            "processId": 400,
-            "exited": false
-        },
-        {
-            "deviceId": "269d41d8160d7ece",
-            "name": "com.hackathon.trackclearance",
-            "processId": 3025,
-            "exited": false
-        },
-        {
-            "deviceId": "269d41d8160d7ece",
-            "name": "com.hackathon.trackclearance",
-            "processId": 4437,
-            "exited": false
-        },
-        {
-            "deviceId": "269d41d8160d7ece",
-            "name": "com.hackathon.trackclearance",
-            "processId": 5331,
-            "exited": false
-        },
-        {
-            "deviceId": "269d41d8160d7ece",
-            "name": "com.hackathon.trackclearance",
             "processId": 16390,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "269d41d8160d7ece",
             "name": "com.hackathon.trackclearance",
             "processId": 8372,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "269d41d8160d7ece",
             "name": "com.hackathon.trackclearance",
             "processId": 26504,
+            "exited": true
+        },
+        {
+            "deviceId": "269d41d8160d7ece",
+            "name": "com.sec.android.app.launcher",
+            "processId": 17632,
+            "exited": false
+        },
+        {
+            "deviceId": "269d41d8160d7ece",
+            "name": "com.hackathon.trackclearance",
+            "processId": 25574,
+            "exited": true
+        },
+        {
+            "deviceId": "269d41d8160d7ece",
+            "name": "com.hackathon.trackclearance",
+            "processId": 29767,
             "exited": false
         },
         {

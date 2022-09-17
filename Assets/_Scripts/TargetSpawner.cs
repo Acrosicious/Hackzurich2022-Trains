@@ -273,6 +273,19 @@ public class TargetSpawner : MonoBehaviour
 
     }
 
+    public void SetVisibleMeshes(bool visible)
+    {
+        foreach(var a in _anchorIndicators)
+        {
+            a.SetActive(visible);
+        }
+
+        foreach(var m in _clearanceIndicators)
+        {
+            m.gameObject.SetActive(visible);
+        }
+    }
+
     public void SetTrackingStatus(bool status)
     {
         _planeGen._trackingLost = status;

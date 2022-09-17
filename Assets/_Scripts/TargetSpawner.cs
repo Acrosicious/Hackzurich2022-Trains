@@ -31,6 +31,7 @@ public class TargetSpawner : MonoBehaviour
     public Camera _firstPersonCam;
 
     public GameObject ClearanceObj;
+    public GameObject Radius1mIndicator;
 
 
     [Header("Plane Visuals")]
@@ -52,6 +53,7 @@ public class TargetSpawner : MonoBehaviour
     {
         _anchorIndicators = new List<GameObject>();
         _clearanceIndicators = new List<GameObject>();
+        Radius1mIndicator.SetActive(false);
     }
 
     void OnEnable()
@@ -70,18 +72,28 @@ public class TargetSpawner : MonoBehaviour
         {
             if (_arLeftTrack == null)
             {
-                CreateTrackAnchor(ref _arLeftTrack);
+                Quaternion planeRotation = Quaternion.identity;
+                CreateTrackAnchor(ref _arLeftTrack, out planeRotation);
+                if(_arLeftTrack != null)
+                {
+                    Radius1mIndicator.transform.position = _arLeftTrack.transform.position;
+                    Radius1mIndicator.transform.rotation = planeRotation;
+                    Radius1mIndicator.SetActive(true);
+                }
             }
             else if (_arRightTrack == null)
             {
-                CreateTrackAnchor(ref _arRightTrack);
+                CreateTrackAnchor(ref _arRightTrack, out _);
+                if(_arRightTrack != null)
+                {
+                    Radius1mIndicator.SetActive(false);
+                }
             }
-            else
-            {
-                ResetAnchorAndClearance();
-            }
+            //else
+            //{
+            //    ResetAnchorAndClearance();
+            //}
         }
-         
 
         if(_arLeftTrack != null && _arRightTrack != null)
         {
@@ -90,10 +102,9 @@ public class TargetSpawner : MonoBehaviour
                 ShowClearance();
             }
         }
-       
     }
 
-    private void ResetAnchorAndClearance()
+    public void ResetAnchorAndClearance()
     {
         foreach(var indicator in _clearanceIndicators)
         {
@@ -141,7 +152,19 @@ public class TargetSpawner : MonoBehaviour
             _clearanceIndicators.Add(ind2);
         }
 
+        MainUIController.Instance._resetButton.SetActive(true);
+
         //ClearanceRight = Instantiate(ClearanceObj, Center, ClearanceLeft.transform.rotation * Quaternion.Euler(0, 180, 0));
+
+    }
+
+    private void test()
+    {
+        
+    }
+
+    public void UserInputConfirm()
+    {
 
     }
 
@@ -159,10 +182,11 @@ public class TargetSpawner : MonoBehaviour
         }
     }
 
-    public void CreateTrackAnchor(ref Anchor trackAnchor) //create Anchor on vertical plane in front of camera, from center position of smartphone screen
+    public void CreateTrackAnchor(ref Anchor trackAnchor, out Quaternion planeRotation) //create Anchor on vertical plane in front of camera, from center position of smartphone screen
     {
         TrackableHit hit;
 
+        planeRotation = Quaternion.identity;
 
         // If the player has not touched the screen, we are done with this update.
         Touch touch;
@@ -195,6 +219,7 @@ public class TargetSpawner : MonoBehaviour
                 if (detectedPlane.PlaneType != DetectedPlaneType.Vertical)  //only horizontal surfaces
                 {
                     trackAnchor = hit.Trackable.CreateAnchor(hit.Pose);
+                    planeRotation = detectedPlane.CenterPose.rotation;
                     //_anchorCanvas.SetActive(false);
                 }
 

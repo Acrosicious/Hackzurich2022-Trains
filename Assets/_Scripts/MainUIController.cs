@@ -21,7 +21,12 @@ public class MainUIController : MonoBehaviour
     public GameObject _snackbarPanel;
     public TMP_Text _snackbarText;
     public string _panelAnchorText = "Move phone slowly around to scan for surfaces. Tap on the left and right train tracks for clearance indication.";
-    
+
+    [Header("User Buttons")]
+    public GameObject _userButtons;
+    public GameObject _resetButton;
+    public GameObject _confirmButton;
+
     [Header("Retice")]
     public GameObject _reticleObject;
     public GameObject _arrowObject;
@@ -62,7 +67,6 @@ public class MainUIController : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-
     IEnumerator FadeoutPanel()
     {
         float elapsedTime = 0;
@@ -81,6 +85,10 @@ public class MainUIController : MonoBehaviour
         _warningSplashScreen.SetActive(false);
         _snackbarPanel.SetActive(true);
         _snackbarText.text = _panelAnchorText;
+
+        _userButtons.SetActive(true);
+        _confirmButton.SetActive(false);
+        _resetButton.SetActive(false);
     }
 
 }

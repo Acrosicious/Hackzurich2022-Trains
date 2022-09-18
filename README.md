@@ -8,6 +8,8 @@ Unity Version: 2019.4.15f1
 
 A practical and elegant solution to impractical clearance outline measurements for railways.
 
+![Example recording](https://github.com/Acrosicious/Hackzurich2022-Trains/blob/master/github-images/example.gif)
+
 [![See the video!](https://i.ytimg.com/vi/jJIXsanoFkw/maxresdefault.jpg)](https://youtu.be/jJIXsanoFkw "See the video!")
 
 ## Installation

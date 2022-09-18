@@ -12,7 +12,7 @@ A practical and elegant solution to impractical clearance outline measurements f
 
 ### Android
 
-- [Download and install]() the APK
+- [Download and install](https://github.com/Acrosicious/Hackzurich2022-Trains/releases/tag/portrait) the APK
 - That's it 👍
 
 ### IOS

@@ -264,7 +264,6 @@ public class TargetSpawner : MonoBehaviour
                 {
                     trackAnchor = hit.Trackable.CreateAnchor(hit.Pose);
                     planeRotation = detectedPlane.CenterPose.rotation;
-                    //_anchorCanvas.SetActive(false);
                 }
 
             }
@@ -276,7 +275,7 @@ public class TargetSpawner : MonoBehaviour
         var indicator = Instantiate(_debugAnchor, hit.Pose.position, hit.Pose.rotation);
         indicator.transform.parent = trackAnchor.transform;
         _anchorIndicators.Add(indicator.gameObject);
-        Vibration.Vibrate(300, 80, false);
+        Vibration.Vibrate(330, 80, false);
         _planeGen._anchorSet = true;
 
     }

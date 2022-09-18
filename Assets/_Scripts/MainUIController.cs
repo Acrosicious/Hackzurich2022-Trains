@@ -98,7 +98,7 @@ public class MainUIController : MonoBehaviour
     {
         _transpButton.SetActive(active);
         _tunnelButton.SetActive(active);
-        _modelButton.SetActive(active);
+        _modelButton.SetActive(!active);
     }
 
 }

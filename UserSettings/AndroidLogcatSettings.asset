@@ -1,9 +1,9 @@
 {
-    "m_SelectedDeviceId": "269d41d8160d7ece",
+    "m_SelectedDeviceId": "R3CR60HNTLR",
     "m_SelectedPackage": {
-        "deviceId": "269d41d8160d7ece",
+        "deviceId": "R3CR60HNTLR",
         "name": "com.hackathon.trackclearance",
-        "processId": 21948,
+        "processId": 2732,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -51,9 +51,39 @@
             "exited": false
         },
         {
+            "deviceId": "269d41d8160d7ece",
+            "name": "com.hackathon.trackclearance",
+            "processId": 22903,
+            "exited": false
+        },
+        {
+            "deviceId": "269d41d8160d7ece",
+            "name": "com.hackathon.trackclearance",
+            "processId": 26807,
+            "exited": false
+        },
+        {
             "deviceId": "R52NA09HAQL",
             "name": "com.android.settings",
             "processId": 5462,
+            "exited": false
+        },
+        {
+            "deviceId": "R52NA09HAQL",
+            "name": "com.hackathon.trackclearance",
+            "processId": 1389,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CR60HNTLR",
+            "name": "com.hackathon.trackclearance",
+            "processId": 699,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CR60HNTLR",
+            "name": "com.hackathon.trackclearance",
+            "processId": 2732,
             "exited": false
         }
     ],

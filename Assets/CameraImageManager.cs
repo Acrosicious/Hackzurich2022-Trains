@@ -126,7 +126,8 @@ public class CameraImageManager : MonoBehaviour
         var json = Newtonsoft.Json.JsonConvert.DeserializeObject<DetectionResponse>(lastMessageReceived);
         if (!json.points.tracks)
         {
-            text.text = "No tracks found";
+            //text.text = "No tracks found";
+            text.text = "Received: " + lastMessageReceived;
         }
         else
         {

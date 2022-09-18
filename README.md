@@ -8,6 +8,8 @@ Unity Version: 2019.4.15f1
 
 A practical and elegant solution to impractical clearance outline measurements for railways.
 
+[![See the video!](https://i.ytimg.com/vi/jJIXsanoFkw/maxresdefault.jpg)](https://youtu.be/jJIXsanoFkw "See the video!")
+
 ## Installation
 
 ### Android

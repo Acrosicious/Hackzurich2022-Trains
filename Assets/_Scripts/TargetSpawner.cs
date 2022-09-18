@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 #if UNITY_EDITOR
 // Set up touch input propagation while using Instant Preview in the editor.
@@ -73,8 +74,15 @@ public class TargetSpawner : MonoBehaviour
 
     public void Update()
     {
+        
+
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+            {
+                return;
+            }
+
             if (_arLeftTrack == null)
             {
                 Quaternion planeRotation = Quaternion.identity;
@@ -169,7 +177,7 @@ public class TargetSpawner : MonoBehaviour
         MainUIController.Instance.ActivateUserButtons(true);
         MainUIController.Instance._snackbarPanel.SetActive(false);
 
-        SendImageToServer();
+        //SendImageToServer();
 
         //ClearanceRight = Instantiate(ClearanceObj, Center, ClearanceLeft.transform.rotation * Quaternion.Euler(0, 180, 0));
 
@@ -275,7 +283,7 @@ public class TargetSpawner : MonoBehaviour
         var indicator = Instantiate(_debugAnchor, hit.Pose.position, hit.Pose.rotation);
         indicator.transform.parent = trackAnchor.transform;
         _anchorIndicators.Add(indicator.gameObject);
-        Vibration.Vibrate(330, 80, false);
+        Vibration.Vibrate(300, 80, false);
         _planeGen._anchorSet = true;
 
     }

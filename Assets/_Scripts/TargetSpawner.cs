@@ -42,7 +42,9 @@ public class TargetSpawner : MonoBehaviour
 
     [Header("Debug")]
     public Transform _debugAnchor;
-   
+
+    private bool _manualMode = false;
+
     private Anchor _arAnchor;
     private List<GameObject> _anchorIndicators;
     private List<ClearanceSettings> _clearanceIndicators;
@@ -76,7 +78,7 @@ public class TargetSpawner : MonoBehaviour
     {
         
 
-        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        if (_manualMode && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
             if (EventSystem.current.IsPointerOverGameObject())
             {
@@ -100,6 +102,7 @@ public class TargetSpawner : MonoBehaviour
                 if(_arRightTrack != null)
                 {
                     Radius1mIndicator.SetActive(false);
+                    _manualMode = false;
                 }
             }
             //else
@@ -112,16 +115,22 @@ public class TargetSpawner : MonoBehaviour
         {
             if(_clearanceIndicators.Count == 0)
             {
-                ShowClearance();
+                ShowClearance(_arLeftTrack.transform.position, _arRightTrack.transform.position);
             }
         }
+    }
+
+    public void EnableManualMode()
+    {
+        _manualMode = true;
+        MainUIController.Instance._snackbarPanel.SetActive(true);
     }
 
     public void ResetAnchorAndClearance()
     {
         MainUIController.Instance._resetButton.SetActive(false);
         MainUIController.Instance.ActivateUserButtons(false);
-        MainUIController.Instance._snackbarPanel.SetActive(true);
+        //MainUIController.Instance._snackbarPanel.SetActive(true);
 
         foreach(var a in _additionalAnchors)
         {
@@ -147,15 +156,15 @@ public class TargetSpawner : MonoBehaviour
         _anchorIndicators.Clear();
     }
 
-    private void ShowClearance()
+    public void ShowClearance(Vector3 left, Vector3 right)
     {
-        var Center = (_arLeftTrack.transform.position + _arRightTrack.transform.position) / 2f;
-        var RightVector = (_arRightTrack.transform.position - _arLeftTrack.transform.position).normalized;
+        var Center = (left + right) / 2f;
+        var RightVector = (right - left).normalized;
 
         var rot = Quaternion.FromToRotation(Vector3.right, RightVector);
 
         var ClearanceIndicator = Instantiate(ClearanceObj, Center, Quaternion.identity);
-        ClearanceIndicator.transform.LookAt(_arLeftTrack.transform.position);
+        ClearanceIndicator.transform.LookAt(left);
 
         _clearanceIndicators.Add(ClearanceIndicator.GetComponent<ClearanceSettings>());
 
@@ -186,16 +195,6 @@ public class TargetSpawner : MonoBehaviour
     private void SendImageToServer()
     {
         cameraImageManager.createScreenshot();
-    }
-
-    private void test()
-    {
-        
-    }
-
-    public void UserInputConfirm()
-    {
-
     }
 
     public void ToggleMaterial()

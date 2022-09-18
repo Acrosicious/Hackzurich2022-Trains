@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GoogleARCore;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -91,6 +92,8 @@ public class CameraImageManager : MonoBehaviour
         Planes.SetActive(true);
         targetSpawner.SetVisibleMeshes(true);
         PointCloud.SetActive(true);
+
+        MainUIController.Instance._resetButton.SetActive(true);
     }
 
     public IEnumerator SendPostRequestBytes(byte[] imgBytes)
@@ -126,8 +129,9 @@ public class CameraImageManager : MonoBehaviour
         var json = Newtonsoft.Json.JsonConvert.DeserializeObject<DetectionResponse>(lastMessageReceived);
         if (!json.points.tracks)
         {
-            //text.text = "No tracks found";
-            text.text = "Received: " + lastMessageReceived;
+            text.text = "No tracks found";
+            //text.text = "Received: " + lastMessageReceived;
+            MainUIController.Instance.ActivateUserButtons(false);
         }
         else
         {
@@ -145,7 +149,34 @@ public class CameraImageManager : MonoBehaviour
             var r1 = targetSpawner.CreateTrackAnchorRaycast(ScreenPointToRay(Right1));
             var r2 = targetSpawner.CreateTrackAnchorRaycast(ScreenPointToRay(Right2));
             Debug.DrawLine(r1.position, r2.position, Color.red, 20f);
+
+            if(l1 != null && l2 != null && r1 != null && r2 != null)
+            {
+                var P1 = (l1.position + l2.position) / 2f;
+                var P2 = GetClosestPointOnFiniteLine(P1, r1.position, r2.position);
+                targetSpawner.ShowClearance(P1, P2);
+            }
+
+            
+
+            MainUIController.Instance.ActivateUserButtons(true);
+            MainUIController.Instance._resetButton.SetActive(true);
         }
+    }
+
+
+    public static Vector3 GetClosestPointOnFiniteLine(Vector3 point, Vector3 line_start, Vector3 line_end)
+    {
+        Vector3 line_direction = line_end - line_start;
+        float line_length = line_direction.magnitude;
+        line_direction.Normalize();
+        float project_length = Mathf.Clamp(Vector3.Dot(point - line_start, line_direction), 0f, line_length);
+        return line_start + line_direction * project_length;
+    }
+
+    public static Vector3 GetClosestPointOnInfiniteLine(Vector3 point, Vector3 line_start, Vector3 line_end)
+    {
+        return line_start + Vector3.Project(point - line_start, line_end - line_start);
     }
 
     public Ray ScreenPointToRay(Vector3 sp)

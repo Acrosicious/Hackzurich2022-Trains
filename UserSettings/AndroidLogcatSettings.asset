@@ -1,19 +1,13 @@
 {
-    "m_SelectedDeviceId": "R3CR60HNTLR",
+    "m_SelectedDeviceId": "269d41d8160d7ece",
     "m_SelectedPackage": {
-        "deviceId": "R3CR60HNTLR",
+        "deviceId": "269d41d8160d7ece",
         "name": "com.hackathon.trackclearance",
-        "processId": 2732,
+        "processId": 26747,
         "exited": false
     },
     "m_SelectedPriority": 0,
     "m_KnownPackagesForSerialization": [
-        {
-            "deviceId": "269d41d8160d7ece",
-            "name": "com.hackathon.trackclearance",
-            "processId": 26504,
-            "exited": true
-        },
         {
             "deviceId": "269d41d8160d7ece",
             "name": "com.sec.android.app.launcher",
@@ -23,43 +17,43 @@
         {
             "deviceId": "269d41d8160d7ece",
             "name": "com.hackathon.trackclearance",
-            "processId": 25574,
-            "exited": true
-        },
-        {
-            "deviceId": "269d41d8160d7ece",
-            "name": "com.hackathon.trackclearance",
-            "processId": 29767,
-            "exited": true
-        },
-        {
-            "deviceId": "269d41d8160d7ece",
-            "name": "com.hackathon.trackclearance",
-            "processId": 29902,
-            "exited": true
-        },
-        {
-            "deviceId": "269d41d8160d7ece",
-            "name": "com.hackathon.trackclearance",
-            "processId": 12553,
-            "exited": true
-        },
-        {
-            "deviceId": "269d41d8160d7ece",
-            "name": "com.hackathon.trackclearance",
-            "processId": 21948,
-            "exited": false
-        },
-        {
-            "deviceId": "269d41d8160d7ece",
-            "name": "com.hackathon.trackclearance",
-            "processId": 22903,
-            "exited": false
-        },
-        {
-            "deviceId": "269d41d8160d7ece",
-            "name": "com.hackathon.trackclearance",
             "processId": 26807,
+            "exited": true
+        },
+        {
+            "deviceId": "269d41d8160d7ece",
+            "name": "com.hackathon.trackclearance",
+            "processId": 18689,
+            "exited": true
+        },
+        {
+            "deviceId": "269d41d8160d7ece",
+            "name": "com.hackathon.trackclearance",
+            "processId": 32502,
+            "exited": true
+        },
+        {
+            "deviceId": "269d41d8160d7ece",
+            "name": "com.hackathon.trackclearance",
+            "processId": 32522,
+            "exited": true
+        },
+        {
+            "deviceId": "269d41d8160d7ece",
+            "name": "com.hackathon.trackclearance",
+            "processId": 14046,
+            "exited": true
+        },
+        {
+            "deviceId": "269d41d8160d7ece",
+            "name": "com.hackathon.trackclearance",
+            "processId": 4092,
+            "exited": false
+        },
+        {
+            "deviceId": "269d41d8160d7ece",
+            "name": "com.hackathon.trackclearance",
+            "processId": 26747,
             "exited": false
         },
         {

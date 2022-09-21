@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "269d41d8160d7ece",
         "name": "com.hackathon.trackclearance",
-        "processId": 26747,
+        "processId": 29683,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -17,43 +17,37 @@
         {
             "deviceId": "269d41d8160d7ece",
             "name": "com.hackathon.trackclearance",
-            "processId": 26807,
-            "exited": true
-        },
-        {
-            "deviceId": "269d41d8160d7ece",
-            "name": "com.hackathon.trackclearance",
-            "processId": 18689,
-            "exited": true
-        },
-        {
-            "deviceId": "269d41d8160d7ece",
-            "name": "com.hackathon.trackclearance",
-            "processId": 32502,
-            "exited": true
-        },
-        {
-            "deviceId": "269d41d8160d7ece",
-            "name": "com.hackathon.trackclearance",
-            "processId": 32522,
-            "exited": true
-        },
-        {
-            "deviceId": "269d41d8160d7ece",
-            "name": "com.hackathon.trackclearance",
-            "processId": 14046,
-            "exited": true
-        },
-        {
-            "deviceId": "269d41d8160d7ece",
-            "name": "com.hackathon.trackclearance",
             "processId": 4092,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "269d41d8160d7ece",
             "name": "com.hackathon.trackclearance",
             "processId": 26747,
+            "exited": true
+        },
+        {
+            "deviceId": "269d41d8160d7ece",
+            "name": "com.hackathon.trackclearance",
+            "processId": 7230,
+            "exited": true
+        },
+        {
+            "deviceId": "269d41d8160d7ece",
+            "name": "com.hackathon.trackclearance",
+            "processId": 8881,
+            "exited": true
+        },
+        {
+            "deviceId": "269d41d8160d7ece",
+            "name": "com.hackathon.trackclearance",
+            "processId": 22008,
+            "exited": true
+        },
+        {
+            "deviceId": "269d41d8160d7ece",
+            "name": "com.hackathon.trackclearance",
+            "processId": 29683,
             "exited": false
         },
         {
@@ -131,7 +125,7 @@
         "MemoryGroup": 2,
         "Behavior": 0
     },
-    "m_Filter": "",
+    "m_Filter": "Null",
     "m_FilterIsRegularExpression": false,
     "m_SymbolPaths": []
 }

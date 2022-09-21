@@ -64,20 +64,10 @@ public class TargetSpawner : MonoBehaviour
         _additionalAnchors = new List<Anchor>();
     }
 
-    void OnEnable()
-    {
-
-    }
-
-    public void OnDisable()
-    {
-        Debug.Log("###DEBUG: Spawn Disabled!");
-    }
-
     public void Update()
     {
         
-
+        // If in manual mode, check if user touched the screen in this frame to place Anchors manually
         if (_manualMode && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
             if (EventSystem.current.IsPointerOverGameObject())
@@ -85,6 +75,7 @@ public class TargetSpawner : MonoBehaviour
                 return;
             }
 
+            // First touch in manual mode places the left track anchor
             if (_arLeftTrack == null)
             {
                 Quaternion planeRotation = Quaternion.identity;
@@ -105,12 +96,9 @@ public class TargetSpawner : MonoBehaviour
                     _manualMode = false;
                 }
             }
-            //else
-            //{
-            //    ResetAnchorAndClearance();
-            //}
         }
 
+        // If both anchors are placed, shot the clearance indication
         if(_arLeftTrack != null && _arRightTrack != null)
         {
             if(_clearanceIndicators.Count == 0)
@@ -120,17 +108,21 @@ public class TargetSpawner : MonoBehaviour
         }
     }
 
+    // Start listening for touches to place the anchors
     public void EnableManualMode()
     {
         _manualMode = true;
         MainUIController.Instance._snackbarPanel.SetActive(true);
     }
 
+    /// <summary>
+    /// Change the UI back to the selection of Auto + Manual mode.
+    /// Destroy all anchors and indicators.
+    /// </summary>
     public void ResetAnchorAndClearance()
     {
         MainUIController.Instance._resetButton.SetActive(false);
         MainUIController.Instance.ActivateUserButtons(false);
-        //MainUIController.Instance._snackbarPanel.SetActive(true);
 
         foreach(var a in _additionalAnchors)
         {
@@ -156,6 +148,12 @@ public class TargetSpawner : MonoBehaviour
         _anchorIndicators.Clear();
     }
 
+    /// <summary>
+    /// Places the clearance object in between the two given vectors.
+    /// They should represent an orthogonal line to the tracks.
+    /// </summary>
+    /// <param name="left"></param>
+    /// <param name="right"></param>
     public void ShowClearance(Vector3 left, Vector3 right)
     {
         var Center = (left + right) / 2f;
@@ -167,6 +165,9 @@ public class TargetSpawner : MonoBehaviour
         ClearanceIndicator.transform.LookAt(left);
 
         _clearanceIndicators.Add(ClearanceIndicator.GetComponent<ClearanceSettings>());
+
+        // If you want to draw multiple clearances along a straight track.
+        // If more input is available, this could be used to place clearence along a curve.
 
         //for(int i = 1; i < 4; i++)
         //{
@@ -182,21 +183,23 @@ public class TargetSpawner : MonoBehaviour
         //    _clearanceIndicators.Add(ind2.GetComponent<ClearanceSettings>());
         //}
 
+
         MainUIController.Instance._resetButton.SetActive(true);
         MainUIController.Instance.ActivateUserButtons(true);
+
+        // Hide hint where user is asked to touch the screen.
         MainUIController.Instance._snackbarPanel.SetActive(false);
-
-        //SendImageToServer();
-
-        //ClearanceRight = Instantiate(ClearanceObj, Center, ClearanceLeft.transform.rotation * Quaternion.Euler(0, 180, 0));
 
     }
 
+
+    // Called via UI Input Action (Auto Button)
     private void SendImageToServer()
     {
         cameraImageManager.createScreenshot();
     }
 
+    // Called via UI Input Action (Transparency Button)
     public void ToggleMaterial()
     {
         foreach(var c in _clearanceIndicators)
@@ -205,6 +208,7 @@ public class TargetSpawner : MonoBehaviour
         }
     }
 
+    // Called via UI Input Action (Tunnel/Area Button)
     public void ToggleTunnel()
     {
         foreach (var c in _clearanceIndicators)
@@ -213,6 +217,7 @@ public class TargetSpawner : MonoBehaviour
         }
     }
 
+    // Called via UI Input Action (Unused, previously used to display 3D Track object)
     public void ToggleModel()
     {
         foreach (var c in _clearanceIndicators)
@@ -223,11 +228,7 @@ public class TargetSpawner : MonoBehaviour
 
     private void OnGUI()
     {
-        //if (_arLeftTrack == null)
-        //{
-        //    GUI.skin.label.fontSize = 50;
-        //    GUI.Label(new Rect(10, 30, 500, 1000), "LEFT NULL");
-        //}
+        // For degub to show the ARCore calculated distance between the anchors.
         if (_arLeftTrack && _arRightTrack)
         {
             GUI.skin.label.fontSize = 50;
@@ -235,13 +236,20 @@ public class TargetSpawner : MonoBehaviour
         }
     }
 
-    public void CreateTrackAnchor(ref Anchor trackAnchor, out Quaternion planeRotation) //create Anchor on vertical plane in front of camera, from center position of smartphone screen
+    /// <summary>
+    /// Create Anchor on vertical ARCore plane where the user touched the screen.
+    /// Uses Raycast from Screenspace touch point.
+    /// </summary>
+    /// <param name="trackAnchor">Referenca to the anchor object to be used for the new anchor.</param>
+    /// <param name="planeRotation">Rotation of the plane for the circular distance indicator.</param>
+    public void CreateTrackAnchor(ref Anchor trackAnchor, out Quaternion planeRotation)
     {
         TrackableHit hit;
 
         planeRotation = Quaternion.identity;
 
         // If the player has not touched the screen, we are done with this update.
+        // Probably redundant now.
         Touch touch;
         if (Input.touchCount < 1 || (touch = Input.GetTouch(0)).phase != TouchPhase.Began)
         {
@@ -287,6 +295,11 @@ public class TargetSpawner : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Like CreateTrackAnchor but uses the passed ray instead of touch input.
+    /// </summary>
+    /// <param name="ray">Ray which points towards the plane with the tracks.</param>
+    /// <returns></returns>
     public Transform CreateTrackAnchorRaycast(Ray ray)
     {
         TrackableHit hit;
@@ -328,6 +341,10 @@ public class TargetSpawner : MonoBehaviour
         return indicator;
     }
 
+    /// <summary>
+    /// Can be used to hide the UI for the screenshot.
+    /// </summary>
+    /// <param name="visible"></param>
     public void SetVisibleMeshes(bool visible)
     {
         foreach(var a in _anchorIndicators)

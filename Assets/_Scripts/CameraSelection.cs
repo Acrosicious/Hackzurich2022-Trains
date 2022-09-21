@@ -9,6 +9,10 @@ public class CameraSelection : MonoBehaviour
     public ARCoreSession aRCoreSession;
     private List<CameraConfig> configs = null;
 
+    /// <summary>
+    /// This was an abandoned test to utilize different cameras on the device. 
+    /// Better to upgrade to newer AR Version + Unity
+    /// </summary>
     public void Awake()
     {
         // Register a custom selection function for the callback.

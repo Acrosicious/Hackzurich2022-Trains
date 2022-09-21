@@ -10,6 +10,7 @@ using UnityEngine.UI;
 
 public class CameraImageManager : MonoBehaviour
 {
+    // Where to send the images, could be public for inspector or read from .env
     private string url = "http://34.83.254.195/detect";
     //private string url = "https://httpbin.org/post";
 
@@ -24,10 +25,9 @@ public class CameraImageManager : MonoBehaviour
     private DetectionFacts detectionFacts;
 
 
-    Vector3 lastPosition;
-
     public void createScreenshot()
     {
+        // Async screenshots are not supported, this was to test that..
         //StartCoroutine(AsyncScreenshot());
 
         StartCoroutine(CreateScrenshotWithoutUI());
@@ -62,6 +62,10 @@ public class CameraImageManager : MonoBehaviour
     //    }
     //}
 
+    /// <summary>
+    /// Hide UI, take screenshot, store camera data, show UI.
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator CreateScrenshotWithoutUI()
     {
         UI.SetActive(false);
@@ -77,7 +81,6 @@ public class CameraImageManager : MonoBehaviour
         detectionFacts.nearClipPlane = Camera.main.nearClipPlane;
         detectionFacts.worldToScreen = Camera.main.projectionMatrix * Camera.main.worldToCameraMatrix;
 
-        lastPosition = Camera.main.transform.position;
         var tex = ScreenCapture.CaptureScreenshotAsTexture();
         var resized = Resize(tex, tex.width / 4, tex.height / 4);
         //tex.Resize(tex.width / 4, tex.height / 4);
@@ -96,12 +99,16 @@ public class CameraImageManager : MonoBehaviour
         MainUIController.Instance._resetButton.SetActive(true);
     }
 
+    /// <summary>
+    /// Send to server and wait for response
+    /// </summary>
+    /// <param name="imgBytes"></param>
+    /// <returns></returns>
     public IEnumerator SendPostRequestBytes(byte[] imgBytes)
     {
         text.text = "Sending Request...";
         List<IMultipartFormSection> formData = new List<IMultipartFormSection>();
-        //formData.Add(new MultipartFormDataSection("image64=" + img64));
-        //formData.Add(new MultipartFormDataSection("test=" + "test123"));
+
         formData.Add(new MultipartFormFileSection("image", imgBytes, "image.png", "image/png"));
 
         UnityWebRequest www = UnityWebRequest.Post(url, formData);
@@ -110,6 +117,7 @@ public class CameraImageManager : MonoBehaviour
         if (www.isNetworkError || www.isHttpError)
         {
             Debug.Log(www.error);
+            // Text could be used in a more sensible UI
             text.text = www.error;
         }
         else
@@ -126,22 +134,26 @@ public class CameraImageManager : MonoBehaviour
         lastMessageReceived = www.downloadHandler.text;
         text.text = "Received: " + lastMessageReceived;
 
+        // Assume we receive the correct JSON
         var json = Newtonsoft.Json.JsonConvert.DeserializeObject<DetectionResponse>(lastMessageReceived);
         if (!json.points.tracks)
         {
             text.text = "No tracks found";
-            //text.text = "Received: " + lastMessageReceived;
             MainUIController.Instance.ActivateUserButtons(false);
         }
         else
         {
             text.text = "Tracks found!";
 
+            // Right now we to the camera calculations here
+
+            // Read points and enlarge back to original screen size
             var Left1 = new Vector3(json.points.left[0][0] * 4, detectionFacts.pixelHeight - json.points.left[0][1] * 4, 0);
             var Left2 = new Vector3(json.points.left[1][0] * 4, detectionFacts.pixelHeight - json.points.left[1][1] * 4, 0);
             var Right1 = new Vector3(json.points.right[0][0] * 4, detectionFacts.pixelHeight - json.points.right[0][1] * 4, 0);
             var Right2 = new Vector3(json.points.right[1][0] * 4, detectionFacts.pixelHeight - json.points.right[1][1] * 4, 0);
 
+            // For all 4 points, use the 
             var l1 = targetSpawner.CreateTrackAnchorRaycast(ScreenPointToRay(Left1));
             var l2 = targetSpawner.CreateTrackAnchorRaycast(ScreenPointToRay(Left2));
             Debug.DrawLine(l1.position, l2.position, Color.green, 20f);
@@ -179,17 +191,33 @@ public class CameraImageManager : MonoBehaviour
         return line_start + Vector3.Project(point - line_start, line_end - line_start);
     }
 
+    /// <summary>
+    /// Uses current detection facts to determine the previous screel to world transformation.
+    /// </summary>
+    /// <param name="sp"></param>
+    /// <returns></returns>
     public Ray ScreenPointToRay(Vector3 sp)
     {
+        // We create 2 vector to create the ray. First on at the camera plane, second one 1m in front.
         var v0 = manualScreenPointToWorld(detectionFacts.worldToScreen, detectionFacts.pixelWidth,
                 detectionFacts.pixelHeight, 0, sp);
         var v1 = manualScreenPointToWorld(detectionFacts.worldToScreen, detectionFacts.pixelWidth,
                 detectionFacts.pixelHeight, 1, sp);
 
+        // Create Ray
         var ray = new Ray(v0, (v1-v0).normalized);
         return ray;
     }
 
+    /// <summary>
+    /// Uses inverse of old world2screen to determine where the point was previously in screen space when the request was sent.
+    /// </summary>
+    /// <param name="world2Screen"></param>
+    /// <param name="pixelWidth"></param>
+    /// <param name="pixelHeight"></param>
+    /// <param name="nearClipPlane"></param>
+    /// <param name="sp"></param>
+    /// <returns></returns>
     Vector3 manualScreenPointToWorld(Matrix4x4 world2Screen, int pixelWidth, int pixelHeight, float nearClipPlane, Vector3 sp)
     {
         Matrix4x4 screen2World = world2Screen.inverse;
@@ -212,12 +240,21 @@ public class CameraImageManager : MonoBehaviour
         return new Vector3(pos.x, pos.y, pos.z);
     }
 
+    /// <summary>
+    /// Resize an image and draw it in a new texture.
+    /// </summary>
+    /// <param name="texture2D">Input image</param>
+    /// <param name="targetX"></param>
+    /// <param name="targetY"></param>
+    /// <returns></returns>
     Texture2D Resize(Texture2D texture2D, int targetX, int targetY)
     {
         RenderTexture rt = new RenderTexture(targetX, targetY, 24);
         RenderTexture.active = rt;
         Graphics.Blit(texture2D, rt);
         Texture2D result = new Texture2D(targetX, targetY);
+
+        // Read from active RT
         result.ReadPixels(new Rect(0, 0, targetX, targetY), 0, 0);
         result.Apply();
         return result;

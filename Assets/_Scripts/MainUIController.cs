@@ -20,7 +20,7 @@ public class MainUIController : MonoBehaviour
     [Header("Snackbar")]
     public GameObject _snackbarPanel;
     public TMP_Text _snackbarText;
-    public string _panelAnchorText = "Move phone slowly around to scan for surfaces. Tap on the left and right train tracks for clearance indication.";
+    public string _panelAnchorText;
 
     [Header("User Buttons")]
     public GameObject _userButtons;
@@ -30,13 +30,8 @@ public class MainUIController : MonoBehaviour
     public GameObject _autoButton;
     public GameObject _manualButton;
 
-    [Header("Retice")]
-    public GameObject _reticleObject;
-    public GameObject _arrowObject;
-
     [Header("In Game Objects")]
     public GameObject _planeDiscovery;
-    public GameObject _XTarget;
 
     public static MainUIController Instance { get; private set; }
 
@@ -56,20 +51,20 @@ public class MainUIController : MonoBehaviour
     void Start()
     {
         StartCoroutine(FadeoutPanel());
-        ResetUI();
     }
 
-
-    public void ResetUI()
-    {
-        _arrowObject.SetActive(false);
-    }
-
+    /// <summary>
+    /// Restarts the whole application
+    /// </summary>
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
+    /// <summary>
+    /// Fade out the intro splash screen and activate the user buttons
+    /// </summary>
+    /// <returns></returns>
     IEnumerator FadeoutPanel()
     {
         float elapsedTime = 0;
@@ -86,7 +81,7 @@ public class MainUIController : MonoBehaviour
         }
 
         _warningSplashScreen.SetActive(false);
-        //_snackbarPanel.SetActive(true);
+
         _snackbarText.text = _panelAnchorText;
 
         _userButtons.SetActive(true);
@@ -95,6 +90,10 @@ public class MainUIController : MonoBehaviour
         _resetButton.SetActive(false);
     }
 
+    /// <summary>
+    /// Enable or disable user buttons that control the tunnel graphics
+    /// </summary>
+    /// <param name="active">True shows the controls and hides the initial setup buttons.</param>
     public void ActivateUserButtons(bool active)
     {
         _transpButton.SetActive(active);
